@@ -11,7 +11,7 @@ class BaseApp
   end
 
   def command_line_arguments
-    [['q','quiet','Be less verbose']]
+    [['v','verbose','Be more verbose']]
   end
 
   def construct_opts
@@ -49,7 +49,7 @@ class BaseApp
     app = self.new
     app.parse_command_line_options
     max_width = app.command_line_arguments.map {|x| x[1].length}.max
-    unless app.quiet
+    if app.verbose
       puts "#$0 Parameters:"
       app.command_line_arguments.each do |opt_spec|
         short, arg, descr = opt_spec
