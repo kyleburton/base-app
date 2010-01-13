@@ -50,13 +50,13 @@ class BaseApp
     app.parse_command_line_options
     max_width = app.command_line_arguments.map {|x| x[1].length}.max
     if app.verbose
-      puts "#$0 Parameters:"
+      $sterr.puts "#$0 Parameters:"
       app.command_line_arguments.each do |opt_spec|
         short, arg, descr = opt_spec
         option = arg.gsub(/=$/,'').gsub('-','_')
-        printf( "  %*s : %s\n", max_width, arg.gsub('=',''), app.send(option.to_sym))
+        $sterr.printf( "  %*s : %s\n", max_width, arg.gsub('=',''), app.send(option.to_sym))
       end
-      puts ""
+      $sterr.puts ""
     end
     app.run
     exit app.status
