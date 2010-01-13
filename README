@@ -1,0 +1,7 @@
+Base Application Class
+
+Provides convienience methods for declaring command line options and a bit of life cycle management for your (command line) application.
+
+
+#rake package
+#gem push
