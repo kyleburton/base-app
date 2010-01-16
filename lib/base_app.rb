@@ -69,6 +69,47 @@ class BaseApp
     text
   end
 
+  def process_template_to_file(name,target,props={})
+    write_file(target, process_template(name,target,props)
+  end
+
+  def get_template(template_name)
+    unless @templates
+      @templates = {}
+      template_data = DATA.read
+      template_data.scan(/(__.+?__.+?__.+?__)/m).each do |template|
+        template = template[0]
+        template =~ /^(__.+?__)$/m
+        name = $1
+        template.gsub! /^__.+?__$/m, ''
+        @templates[name] = template
+      end
+    end
+    @templates["__#{template_name.to_s.upcase}__"] or
+      raise "Error: no template named: #{template_name} (#{@templates.keys.join(", ")})"
+  end
+
+  def process_template (template_name, additional_properties={} )
+    template = get_template template_name
+
+    @properties.merge(additional_properties).each do |prop,val|
+      term = "{{#{prop}}}"
+      printf "substituting: %-40s => %s\n", term, val
+      template.gsub! term, val
+    end
+
+    template
+  end
+
+  def write_file(file,*content)
+    File.open(target,'w') do |f|
+      content.each do |c|
+        f.puts c.to_s
+      end
+    end
+  end
+
+
   def self.main
     app = self.new
     app.parse_command_line_options
