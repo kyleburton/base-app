@@ -70,7 +70,7 @@ class BaseApp
   end
 
   def process_template_to_file(name,target,props={})
-    write_file(target, process_template(name,target,props)
+    write_file(target, process_template(name,target,props))
   end
 
   def get_template(template_name)
@@ -101,14 +101,13 @@ class BaseApp
     template
   end
 
-  def write_file(file,*content)
+  def write_file(target,*content)
     File.open(target,'w') do |f|
       content.each do |c|
         f.puts c.to_s
       end
     end
   end
-
 
   def self.main
     app = self.new
