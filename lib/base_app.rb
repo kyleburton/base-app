@@ -21,8 +21,9 @@ class BaseApp
         short, long, description, required, default_value = argspec
         param_name = long.gsub '=', ''
         @required_opts << param_name if required
+        @options[param_name] = default_value if default_value
         create_getter_setter(long)
-        opts.on("-#{short}", "--#{long}", description) do |val|
+        opts.on("-#{short}", "--#{long} VAL", description) do |val|
           @options[param_name] = val
           setter = param_name.gsub("-", "_") + "="
           self.send(setter,val)
