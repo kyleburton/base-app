@@ -19,11 +19,12 @@ class BaseApp
     opts = OptionParser.new do |opts|
       command_line_arguments.each do |argspec|
         short, long, description, required, default_value = argspec
-        param_name = long.gsub '=', ''
+        param_name, param_type = long.split '='
         @required_opts << param_name if required
         @options[param_name] = default_value if default_value
         create_getter_setter(long)
-        opts.on("-#{short}", "--#{long} VAL", description) do |val|
+        param_required = long.index("=") ? " VAL" : ""
+        opts.on("-#{short}", "--#{long}#{param_name}", description) do |val|
           @options[param_name] = val
           setter = param_name.gsub("-", "_") + "="
           self.send(setter,val)
